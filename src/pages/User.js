@@ -155,7 +155,7 @@ export default function User() {
   return (
     <Page title="User | Minimal-UI">
       <Container>
-        <BasicModelUser />
+        <BasicModelUser getAllUser={getAllUser} />
         <Card>
           <UserListToolbar
             numSelected={selected.length}

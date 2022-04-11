@@ -29,10 +29,10 @@ export default function Category_Model(props) {
     image: props?.allCategoryGet?.image || '',
     name: props?.allCategoryGet?.name || ''
   });
-  console.log('props?.allCategoryGet?.image: ', props?.allCategoryGet?.image);
+  // console.log('props?.allCategoryGet?.image: ', props?.allCategoryGet?.image);
 
   const [imgUrl, setImgUrl] = useState([]);
-  const [file, setFile] = useState([]);
+  const [file, setFile] = useState(null);
 
   const [loader, setLoader] = useState(false);
 
@@ -41,71 +41,81 @@ export default function Category_Model(props) {
   });
 
   const uploadMultipleFiles = async (e) => {
-    let fileObj = [];
-    let fileArray = [];
-    fileObj.push(e.target.files);
-    for (let i = 0; i < fileObj[0].length; i++) {
-      fileArray.push(URL.createObjectURL(fileObj[0][i]));
-    }
-    setFile([...file, ...fileArray]);
-    setImages([...images, ...fileObj[0]]);
+    setFile(URL.createObjectURL(e.target.files[0]));
+
+    // let fileObj = [];
+    // let fileArray = [];
+    // fileObj.push(e.target.files);
+    // for (let i = 0; i < fileObj[0].length; i++) {
+    //   fileArray.push(URL.createObjectURL(fileObj[0][i]));
+    // }
+    // setFile([...file, ...fileArray]);
+    // setImages([...images, ...fileObj[0]]);
   };
 
   const handleSubmit = async () => {
     const formData = new FormData();
 
-    for (let i = 0; i < images.length; i++) {
-      formData.append('singleFile', images[i]);
-    }
+    formData.append('singleFile', file);
 
-    console.log('imges---', images);
     for (var pair of formData.entries()) {
       console.log(pair[0] + ', ' + pair[1]);
     }
 
     setLoader(true);
+
     try {
-      const res = await apiInstance.post(`category/create`, formData);
-
-      console.log('============ categoty respon =============', res.status);
-
-      if (res.status == 200) {
-        console.log('res.status: ', res.status);
-        setImgUrl(res.data.data.url);
-        console.log('res.data.data.url: ', res.data.data.url);
-        console.log(' img url ', imgUrl);
-
-        const categoryData = {
-          image: res.data.data.url,
-          name: category.name
-        };
-        console.log('categoryData: ', categoryData);
-
-        if (props.isCategoryEdit) {
-          try {
-            const res = await apiInstance.put(
-              `category/update/${props.allCategoryGet._id}`,
-              categoryData
-            );
-            console.log('category respons', res.data.data);
-            setLoader(false);
-            props.onClose();
-            props.CategoryGet;
-          } catch (error) {
-            console.log('error ', error.respons);
-          }
-        } else {
-          try {
-            const respons = await apiInstance.post(`category/create`, categoryData);
-            console.log('respons: ', respons);
-          } catch (error) {
-            console.log('category post call error', error.response);
-          }
+      const imagUpload = await apiInstance.post(`file/upload`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
         }
-      }
+      });
+      console.log('imagUpload: ', imagUpload);
     } catch (error) {
-      console.log('================ error ================', error.response);
+      console.log('error: ', error.response);
     }
+    // try {
+    //   const res = await apiInstance.post(`category/create`, formData);
+
+    //   console.log('============ categoty respon =============', res.status);
+
+    //   if (res.status == 200) {
+    //     console.log('res.status: ', res.status);
+    //     setImgUrl(res.data.data.url);
+    //     console.log('res.data.data.url: ', res.data.data.url);
+    //     console.log(' img url ', imgUrl);
+
+    //     const categoryData = {
+    //       image: res.data.data.url,
+    //       name: category.name
+    //     };
+    //     console.log('categoryData: ', categoryData);
+
+    //     if (props.isCategoryEdit) {
+    //       try {
+    //         const res = await apiInstance.put(
+    //           `category/update/${props.allCategoryGet._id}`,
+    //           categoryData
+    //         );
+    //         console.log('category respons', res.data.data);
+    //         setLoader(false);
+    //         props.onClose();
+    //         props.CategoryGet;
+    //       } catch (error) {
+    //         console.log('error ', error.respons);
+    //       }
+    //     } else {
+    //       try {
+    //         const respons = await apiInstance.post(`category/create`, categoryData);
+    //         console.log('respons: ', respons);
+    //       } catch (error) {
+    //         console.log('category post call error', error.response);
+    //       }
+    //     }
+    //   }
+    // } catch (error) {
+    //   console.log('================ error ================', error.response);
+    // }
   };
 
   const Input = styled('input')({
@@ -157,7 +167,10 @@ export default function Category_Model(props) {
                     multiple
                   />
                 </div>
-                {(file || []).map((url, index) => {
+
+                <img src={file} alt="" style={{ height: 'auto', width: '100px' }} />
+
+                {/* {(file || []).map((url, index) => {
                   console.log('url: ', url);
                   return (
                     <div
@@ -173,19 +186,9 @@ export default function Category_Model(props) {
                       <img src={url.image} alt="" style={{ height: '100%', width: '100%' }} />
                     </div>
                   );
-                })}
+                })} */}
 
-                {category.image.map((e) => {
-                  console.log('e: ', e);
-                  {
-                    props?.allCategoryGet && props?.allCategoryGet?.image ? (
-                      <img src={IMG_URL + props?.allCategoryGet?.image} />
-                    ) : null;
-                  }
-                  return <img src={e.image} />;
-                })}
-
-                {/* {category.image.map((e) => {
+                {/* {category?.image?.map((e) => {
                   console.log('e: ', e);
                   {
                     props?.allCategoryGet && props?.allCategoryGet?.image ? (
@@ -206,7 +209,7 @@ export default function Category_Model(props) {
                 variant="contained"
                 onClick={handleSubmit}
               >
-                {props.isCategoryEdit ? 'Update' : 'Add Category'}
+                {props?.isCategoryEdit ? 'Update' : 'Add Category'}
               </Button>
             </Box>
           </Grid>

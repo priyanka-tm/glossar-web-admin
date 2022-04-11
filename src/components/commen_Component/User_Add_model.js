@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { useState  } from 'react';
-import { Stack ,Modal } from '@mui/material';
+import { useState } from 'react';
+import { Stack, Modal } from '@mui/material';
 import Button from '@mui/material/Button';
 import PageTitle from './Page_title_';
 import Iconify from '../Iconify';
 import UserModel from './user_model';
+import { PropaneSharp } from '@mui/icons-material';
 
 const style = {
   position: 'absolute',
@@ -15,10 +16,10 @@ const style = {
   bgcolor: 'background.paper',
   boxShadow: 24,
   p: 4,
-  borderRadius: 3 ,
+  borderRadius: 3
 };
 
-export default function BasicModalUser() {
+export default function BasicModalUser(props) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -26,27 +27,24 @@ export default function BasicModalUser() {
   return (
     <div>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-            <PageTitle pageTitle='User'  />
-            <Button
-            variant="contained"
-            startIcon={<Iconify icon="eva:plus-fill" />}
-            onClick={handleOpen}>
-               Add User
-            </Button>
-        </Stack>
-          
-        <Modal
+        <PageTitle pageTitle="User" />
+        <Button
+          variant="contained"
+          startIcon={<Iconify icon="eva:plus-fill" />}
+          onClick={handleOpen}
+        >
+          Add User
+        </Button>
+      </Stack>
+
+      <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-         <UserModel   onClose={handleClose}/>
+        <UserModel getAllUser={props.getAllUser} onClose={handleClose} />
       </Modal>
-        
     </div>
   );
 }
-
-
-

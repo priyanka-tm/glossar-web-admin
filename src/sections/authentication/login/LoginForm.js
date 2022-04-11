@@ -11,8 +11,8 @@ import { apiInstance } from 'src/httpClient';
 
 export default function LoginForm() {
   const navigate = useNavigate();
-  const [email, setemail] = useState('ravi1@gmail.com');
-  const [password, setPassword] = useState('987654321');
+  const [email, setemail] = useState('');
+  const [password, setPassword] = useState('');
   const [loader, setLoader] = useState(false);
   const [error, setError] = useState('');
   const [errorMessage, setErrorMessage] = useState('');

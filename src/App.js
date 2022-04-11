@@ -15,7 +15,7 @@ export default function App() {
   const user = getData();
 
   Object.assign(apiInstance.defaults.headers, {
-    Authorization: user.token
+    Authorization: user?.token
   });
   console.log('token-----', getToken());
   return (

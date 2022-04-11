@@ -34,20 +34,25 @@ const style = {
 };
 
 export default function ProductModel(props) {
+  console.log('product model props============================', props);
   const [productData, setProductData] = useState({
     image: props?.allProductData?.image || '',
     name: props?.allProductData?.name || '',
     detail: props?.allProductData?.detail || '',
     price: props?.allProductData?.price || '',
     quantity: props?.allProductData?.quantity || '',
-    weight: props?.allProductData?.weight || '',
-    category: props?.allProductData?.category || ''
+    category: props?.allProductData?.category.name || '',
+    weight: props?.allProductData?.weight || ''
   });
+  console.log('props?.allProductData?.quantity: ', props?.allProductData?.quantity);
+  console.log('props?.allProductData?.category: ', props?.allProductData?.category);
   console.log('props?.allProductData?.image: ', props?.allProductData?.image);
 
-  const [age, setAge] = useState('');
+  const [age, setAge] = useState(props?.allProductData?.category._id || '');
+  console.log('age: ', age);
   const [loader, setLoader] = useState(false);
   const [allData, setAllData] = useState([]);
+  console.log('allData: ', allData);
   const [file, setFile] = useState([]);
   const [images, setImages] = useState([]);
   const [imgUrl, setImgUrl] = useState([]);
@@ -60,7 +65,7 @@ export default function ProductModel(props) {
     setProductData({ ...productData, [e.target.name]: e.target.value });
   });
 
-  const handleChange = (event) => {
+  const handleOfChange = (event) => {
     console.log('event: ', event.target.value);
     setAge(event.target.value);
   };
@@ -100,7 +105,6 @@ export default function ProductModel(props) {
           weight: productData.weight,
           category: age
         };
-        console.log('bodyyy', productAllData);
 
         if (props.isProductEdit) {
           try {
@@ -113,7 +117,7 @@ export default function ProductModel(props) {
             console.log('------------------------');
             setLoader(false);
             props.onClose();
-            props.ProductGet;
+            props.ProductGet();
           } catch (e) {
             console.log('eeeee--upp-0000-', e.response);
           }
@@ -121,64 +125,16 @@ export default function ProductModel(props) {
           try {
             const resp = await apiInstance.post(`product/create`, productAllData);
             console.log('---add----', resp);
+            props.onClose();
+            props.getAllProduct();
           } catch (e) {
             console.log('eeeee---0000-', e.response);
           }
         }
-
-        // try {
-        //   if (props.isProductEdit) {
-        //     res = await apiInstance.put(`product/update/${props.allProductData._id}`, productAllData);
-        //     console.log('-=-=-=-=-=-=-=-=-= product all data  -=-=-=-=-=-=-=-=-=');
-        //     console.log('product', res);
-        //     console.log('------------------------');
-        //     setLoader(false);
-        //     props.onClose();
-        //     props.ProductGet;
-        //   }
-        // } catch (e) {
-        //   console.log('eeeee---0000-', e.response);
-        // }
       }
     } catch (e) {
       console.log('eeeee----', e.response);
-    } finally {
     }
-
-    // setLoader(true);
-    // try {
-    //   let res = {};
-    //   if (props.isProductEdit) {
-    //     res = await apiInstance.put(`product/update/${props.allProductData._id}`, productData);
-    //     // console.log('-=-=-=-=-=-=-=-=-= product all data  -=-=-=-=-=-=-=-=-=');
-    //     // console.log('product', res);
-    //     // console.log('------------------------');
-    //     setLoader(false);
-    //     props.onClose();
-    //     props.ProductGet;
-    //   } else {
-    //     console.log(' else part of product section  ');
-
-    //     // const addProductData = {
-    //     //   image: formData.image,
-    //     //   name: formData.name,
-    //     //   detail: formData.detail,
-    //     //   price: formData.price,
-    //     //   quantity: formData.quantity,
-    //     //   weight: formData.weight,
-    //     //   category: allData._id
-    //     // };
-    //     console.log('=============addProductData============= ', productData);
-    //     res = await apiInstance.post(`product/create`, productData.image);
-    //     console.log('imagessssssssssss', productData.image);
-    //     console.log('post call ', res);
-    //     setLoader(false);
-    //     props.onClose();
-    //     props.ProductGet;
-    //   }
-    // } catch (error) {
-    //   console.log('error ', error.response);
-    // }
   };
 
   const getAllCategory = async () => {
@@ -205,24 +161,6 @@ export default function ProductModel(props) {
     }
     setFile([...file, ...fileArray]);
     setImages([...images, ...fileObj[0]]);
-
-    // setTimeout(async () => {
-    //   const formData = new FormData();
-    //   for (let i = 0; i < file.length; i++) {
-    //     formData.append('singleFile', file[i]);
-    //   }
-    //   console.log('images: ', images);
-
-    //   for (var pair of formData.entries()) {
-    //     console.log(pair[0] + ', ' + pair[1]);
-    //   }
-    //   try {
-    //     const res = await apiInstance.post(`file/upload`, formData);
-    //     console.log('iiiiii-------', res);
-    //   } catch (e) {
-    //     console.log('weeeeee: ', e.response);
-    //   }
-    // }, 2000);
   };
 
   return (
@@ -304,8 +242,8 @@ export default function ProductModel(props) {
             >
               <TextField
                 fullWidth
-                name="qunantity"
-                value={productData.qunantity}
+                name="quantity"
+                value={productData.quantity}
                 onChange={hendelFormData}
                 label="Product Quantity"
                 id="fullWidth"
@@ -338,28 +276,32 @@ export default function ProductModel(props) {
                 my: 1
               }}
             >
-              <FormControl sx={{ m: 1, minWidth: 80 }}>
+              <FormControl sx={{ m: 1, minWidth: 490 }}>
                 <InputLabel id="demo-simple-select-autowidth-label">category</InputLabel>
                 <Select
                   labelId="demo-simple-select-autowidth-label"
                   id="demo-simple-select-autowidth"
                   value={age}
-                  onChange={handleChange}
+                  onChange={handleOfChange}
                   autoWidth
-                  label="Age"
+                  label="Category"
                 >
-                  <MenuItem value="">
+                  <MenuItem>
                     <em>None</em>
                   </MenuItem>
 
                   {allData.map((e) => {
-                    {
-                      /* const {name} = e; */
-                    }
-                    {
-                      /* console.log('this is all data', e);/ */
-                    }
-                    return <MenuItem value={e.id}>{e.name}</MenuItem>;
+                    console.log('eeeeeeeeeee: ', e);
+                    console.log(
+                      'props?.allProductData?.category.name === e.name: ',
+                      props?.allProductData?.category.name === e.name
+                    );
+
+                    return (
+                      <MenuItem value={e.id}>
+                        {props?.allProductData?.category._id === e._id ? e.name : e.name}
+                      </MenuItem>
+                    );
                   })}
                 </Select>
               </FormControl>
@@ -390,7 +332,7 @@ export default function ProductModel(props) {
                         marginBottom: '20px'
                       }}
                     >
-                      <img src={url.image} alt="" style={{ height: '100%', width: '100%' }} />
+                      <img src={url} alt="" style={{ height: '100%', width: '100%' }} />
                     </div>
                   );
                 })}
@@ -410,7 +352,7 @@ export default function ProductModel(props) {
                         console.log('ele:======= ', ele);
                         return <img src={IMG_URL + ele} alt="img" />;
                       })
-                    : 'hellooo'}
+                    : null}
                 </div>
 
                 {/* <div className="form-group multi-preview">

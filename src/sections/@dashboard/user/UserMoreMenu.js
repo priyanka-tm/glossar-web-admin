@@ -32,7 +32,7 @@ const style = {
 };
 
 export default function UserMoreMenu(props) {
-  console.log('props: --------', props);
+  console.log('props more menu delet: --------', props);
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
   const [open, setOpen] = useState(false);
@@ -45,17 +45,31 @@ export default function UserMoreMenu(props) {
 
   const userDataDelete = async () => {
     if (props.type == 'user') {
-      const res = await apiInstance.delete(`user/hard-delete/${props.data._id}`);
-      console.log('=-=-=-=-= this is delete  =-=-=-=-=-=--=-=', res);
-      props.getUser();
+      try {
+        const res = await apiInstance.delete(`user/hard-delete/${props.data._id}`);
+        console.log('=-=-=-=-= this is delete  =-=-=-=-=-=--=-=', res);
+        props.getUser();
+      } catch (error) {
+        console.log('error: ', error.response);
+      }
     } else if (props.type == 'product') {
-      const respo = await apiInstance.delete(`product/get-one/${props.data._id}`);
-      console.log('respo: ', respo);
-      props.getUser();
+      console.log('product: ');
+      try {
+        const res = await apiInstance.delete(`product/remove/${props.data._id}`);
+        console.log('respo: ', res);
+        props.allProductGet();
+      } catch (error) {
+        console.log('error: ', error.response);
+      }
+      console.log('props.data._id: ', props.data._id);
     } else {
-      const response = await apiInstance.delete(`category/get-one/${props.data._id}`);
-      console.log('response: ', response);
-      props.getUser();
+      try {
+        const response = await apiInstance.delete(`category/delete/${props.data._id}`);
+        console.log('response: ', response);
+        props.getUser();
+      } catch (error) {
+        console.log('error: ', error.response);
+      }
     }
   };
 
@@ -102,7 +116,7 @@ export default function UserMoreMenu(props) {
             ) : null}
             {props.type == 'product' ? (
               <ProductModel
-                ProductGet={props.allProductGet}
+                allProductGet={props.allProductGet}
                 allProductData={props.data}
                 isProductEdit
                 name="Edit Product"

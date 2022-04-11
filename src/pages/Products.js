@@ -1,19 +1,15 @@
 import { filter } from 'lodash';
-import { sentenceCase } from 'change-case';
 import { useEffect, useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
 // material
 import {
   Card,
   Table,
   Stack,
   Avatar,
-  Checkbox,
   TableRow,
   TableBody,
   TableCell,
   Container,
-  Typography,
   TableContainer,
   TablePagination
 } from '@mui/material';
@@ -24,9 +20,10 @@ import SearchNotFound from '../components/SearchNotFound';
 import { UserListHead, UserListToolbar, UserMoreMenu } from '../sections/@dashboard/user';
 //
 import USERLIST from '../_mocks_/user';
-import { BASE_URL, getToken } from 'src/utils/comman';
+import { BASE_URL, getToken, IMG_URL } from 'src/utils/comman';
 import { apiInstance } from 'src/httpClient';
 import BasicModalProduct from 'src/components/commen_Component/Add_product_Model';
+import { PropaneSharp } from '@mui/icons-material';
 
 // ----------------------------------------------------------------------
 
@@ -92,7 +89,7 @@ export default function User() {
     // console.log('getAllProduct: ');
     try {
       const res = await apiInstance.get(`product/get-all`);
-      // console.log('all user data', res);
+      console.log('all user data', res);
       setAllData(res.data.data);
     } catch (error) {
       // console.log('error', error.response);
@@ -154,7 +151,7 @@ export default function User() {
   return (
     <Page title="User | Minimal-UI">
       <Container>
-        <BasicModalProduct />
+        <BasicModalProduct getAllProduct={getAllProduct} />
         <Card>
           <UserListToolbar
             numSelected={selected.length}
@@ -172,19 +169,21 @@ export default function User() {
                   rowCount={USERLIST.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
-                  // onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
                   {allData
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
                       const { image, name, price, quantity, weight, detail, id, _id } = row;
+                      console.log('quantity: ', quantity);
+                      console.log('row: ', row);
+                      console.log('image: ', image);
                       const isItemSelected = selected.indexOf(name) !== -1;
 
                       return (
                         <TableRow
                           hover
-                          key={_id}
+                          // key={_id}
                           tabIndex={-1}
                           selected={isItemSelected}
                           aria-checked={isItemSelected}
@@ -192,10 +191,7 @@ export default function User() {
                           <TableCell component="th" scope="row" padding="none"></TableCell>
                           <TableCell component="th" scope="row" padding="none">
                             <Stack direction="row" alignItems="center" spacing={2}>
-                              <Avatar alt={name} src={image} />
-                              {/* <Typography variant="subtitle2" noWrap>
-                                {name}xx
-                              </Typography> */}
+                              <Avatar alt={name} src={IMG_URL + image[0]} />
                             </Stack>
                           </TableCell>
                           <TableCell align="left">{name}</TableCell>

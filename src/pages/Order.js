@@ -77,21 +77,21 @@ export default function Order() {
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const [allOrder ,setAllOrder] = useState ();
-  
-  useEffect (()=>{
-    getAllCategory();
-  })
+  const [allOrder, setAllOrder] = useState();
 
-  const getAllCategory = async () =>{
-      try{
-          const res = await apiInstance.get(`order/get-all`)
-          console.log("all category of product", res );
-          setAllOrder(res.data.data)
-      }catch(error){
-         console.log("category error",error);
-      }
-  }
+  useEffect(() => {
+    getAllCategory();
+  });
+
+  const getAllCategory = async () => {
+    try {
+      const res = await apiInstance.get(`order/get-all`);
+      console.log('all category of product', res);
+      setAllOrder(res.data.data);
+    } catch (error) {
+      console.log('category error', error);
+    }
+  };
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -148,7 +148,7 @@ export default function Order() {
   return (
     <Page title="Order | Minimal-UI">
       <Container>
-       <BasicModalCategory/>
+        <BasicModalCategory />
         <Card>
           <UserListToolbar
             numSelected={selected.length}
@@ -180,7 +180,7 @@ export default function Order() {
                           hover
                           key={id}
                           tabIndex={-1}
-                          role="checkbox"
+                          // role="checkbox"
                           selected={isItemSelected}
                           aria-checked={isItemSelected}
                         >
@@ -211,7 +211,7 @@ export default function Order() {
                           </TableCell>
 
                           <TableCell align="right">
-                            <UserMoreMenu type="order"/>
+                            <UserMoreMenu type="order" />
                           </TableCell>
                         </TableRow>
                       );

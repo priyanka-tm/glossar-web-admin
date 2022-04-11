@@ -66,7 +66,7 @@ export default function UserModel(props) {
         console.log('upodate res: ', res);
         // console.log("========SubmitData==========");
         props.onClose();
-        props.UserGet;
+        props.UserGet();
       } else {
         console.log('else: ');
 
@@ -83,7 +83,7 @@ export default function UserModel(props) {
         // console.log('post call ', res);
         setLoader(false);
         props.onClose();
-        props.UserGet;
+        props.getAllUser();
       }
     } catch (error) {
       // console.log('error ', error.response);
