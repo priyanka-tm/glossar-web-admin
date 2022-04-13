@@ -31,8 +31,9 @@ export default function Category_Model(props) {
   });
   // console.log('props?.allCategoryGet?.image: ', props?.allCategoryGet?.image);
 
-  const [imgUrl, setImgUrl] = useState([]);
+  const [imgUrl, setImgUrl] = useState('');
   const [file, setFile] = useState(null);
+  const [uploadFile, setUploadFile] = useState(null);
 
   const [loader, setLoader] = useState(false);
 
@@ -42,6 +43,7 @@ export default function Category_Model(props) {
 
   const uploadMultipleFiles = async (e) => {
     setFile(URL.createObjectURL(e.target.files[0]));
+    setUploadFile(e.target.files[0]);
 
     // let fileObj = [];
     // let fileArray = [];
@@ -56,7 +58,7 @@ export default function Category_Model(props) {
   const handleSubmit = async () => {
     const formData = new FormData();
 
-    formData.append('singleFile', file);
+    formData.append('singleFile', uploadFile);
 
     for (var pair of formData.entries()) {
       console.log(pair[0] + ', ' + pair[1]);
@@ -70,6 +72,20 @@ export default function Category_Model(props) {
           'Content-Type': 'multipart/form-data'
         }
       });
+      if (imagUpload.status == 200) {
+        setImgUrl(imagUpload.data.data.url[0]);
+
+        const catData = {
+          image: imagUpload.data.data.url[0],
+          name: category.name
+        };
+        console.log('catData: ', catData);
+
+        try {
+          const res = await apiInstance.post(`category/create`, catData);
+          console.log('create catres:=========== ', res);
+        } catch (error) {}
+      }
       console.log('imagUpload: ', imagUpload);
     } catch (error) {
       console.log('error: ', error.response);

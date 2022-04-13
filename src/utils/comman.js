@@ -1,7 +1,8 @@
-export const BASE_URL = 'https://web-glooser.herokuapp.com/api/app';
-// export const BASE_URL = 'http://192.168.1.5:12000/api/app/';
+// export const BASE_URL = 'https://web-glooser.herokuapp.com/api/app';
+export const BASE_URL = 'http://192.168.0.108:12000/api/app/';
 
-export const IMG_URL = 'https://web-glooser.herokuapp.com/';
+export const IMG_URL = 'http://192.168.0.108:12000/';
+// export const IMG_URL = 'https://web-glooser.herokuapp.com/';
 
 export const getUser = () => {
   const userStr = sessionStorage.getItem('user');
