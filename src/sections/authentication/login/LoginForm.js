@@ -66,7 +66,7 @@ export default function LoginForm() {
             onChange={hendelEmail}
             id="fullWidth"
           />
-          <TextField label="Remember me" value={password} onChange={hendelPassword} />
+          <TextField label="Password" value={password} onChange={hendelPassword} />
         </Stack>
 
         <Stack spacing={3} style={{ my: 3 }}>

@@ -29,8 +29,8 @@ const style = {
   bgcolor: 'background.paper',
   boxShadow: 24,
   p: 4,
-  borderRadius: 3,
-  overflow: 'scroll'
+  borderRadius: 3
+  // overflow: 'scroll'
 };
 
 export default function ProductModel(props) {
@@ -368,6 +368,12 @@ export default function ProductModel(props) {
 
             {/* <MultipleImageUploadComponent name="image" value={formData.image} /> */}
           </Grid>
+
+          <img
+            src={
+              'https://web-glooser.herokuapp.com/uploads/glooser/singleFile_IMG_0876_1649667432573.PNG'
+            }
+          ></img>
 
           <Grid item xs={12}>
             <Box sx={{ my: 2 }}>
