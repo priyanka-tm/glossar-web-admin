@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useCallback } from 'react';
-import { Grid, IconButton, Stack } from '@mui/material';
+import { CircularProgress, Grid, IconButton, Stack } from '@mui/material';
 import Box from '@mui/material/Box';
 import CloseIcon from '@mui/icons-material/Close';
 import TextField from '@mui/material/TextField';
@@ -24,10 +24,14 @@ const style = {
 };
 
 export default function Category_Model(props) {
-  console.log('props:00000========== ', props.allCategoryGet);
+  // console.log('props:00000========== ', props.allCategoryData);
+  console.log(
+    '=========================================================',
+    props?.allCategoryData?.image
+  );
   const [category, setCategory] = useState({
-    image: props?.allCategoryGet?.image || '',
-    name: props?.allCategoryGet?.name || ''
+    image: props?.allCategoryData?.image || '',
+    name: props?.allCategoryData?.name || ''
   });
   // console.log('props?.allCategoryGet?.image: ', props?.allCategoryGet?.image);
 
@@ -74,21 +78,39 @@ export default function Category_Model(props) {
       });
       if (imagUpload.status == 200) {
         setImgUrl(imagUpload.data.data.url[0]);
-
-        const catData = {
-          image: imagUpload.data.data.url[0],
-          name: category.name
-        };
-        console.log('catData: ', catData);
-
+      }
+      const catData = {
+        image: imagUpload.data.data.url[0],
+        name: category.name
+      };
+      console.log('catData: =======', catData);
+      if (props.isCategoryEdit) {
+        try {
+          const res = await apiInstance.put(
+            `category/update/${props.allCategoryData._id}`,
+            catData
+          );
+          console.log('category respons', res.data.data);
+          setLoader(false);
+          props.onClose();
+          props.CategoryGet();
+        } catch (error) {
+          console.log('error--puttttttttddd ', error.response);
+        }
+      } else {
         try {
           const res = await apiInstance.post(`category/create`, catData);
-          console.log('create catres:=========== ', res);
-        } catch (error) {}
+          console.log('create catres:=========== ', res.data.data);
+          setLoader(false);
+          props.onClose();
+          props.getAllCategory();
+        } catch (error) {
+          console.log('error --------', error.response);
+        }
       }
       console.log('imagUpload: ', imagUpload);
     } catch (error) {
-      console.log('error: ', error.response);
+      console.log('error:============= ', error.response);
     }
     // try {
     //   const res = await apiInstance.post(`category/create`, formData);
@@ -176,15 +198,20 @@ export default function Category_Model(props) {
             <Row>
               <Col>
                 <div className="form-group">
-                  <input
-                    type="file"
-                    className="form-control"
-                    onChange={uploadMultipleFiles}
-                    multiple
-                  />
+                  <input type="file" className="form-control" onChange={uploadMultipleFiles} />
                 </div>
 
-                <img src={file} alt="" style={{ height: 'auto', width: '100px' }} />
+                {file && file.length ? (
+                  <img src={file} alt="img" style={{ height: 'auto', width: '100px' }} />
+                ) : props?.allCategoryData?.image && props?.allCategoryData?.image.length ? (
+                  <img src={props?.allCategoryData?.image} alt="img" />
+                ) : null}
+
+                {/* <div>
+                  {props?.allCategoryData?.image && (
+                    <img src={props?.allCategoryData?.image} alt="img" />
+                  )}
+                </div> */}
 
                 {/* {(file || []).map((url, index) => {
                   console.log('url: ', url);
@@ -226,6 +253,9 @@ export default function Category_Model(props) {
                 onClick={handleSubmit}
               >
                 {props?.isCategoryEdit ? 'Update' : 'Add Category'}
+                {loader ? (
+                  <CircularProgress color="inherit" size={15} style={{ marginLeft: '5px' }} />
+                ) : null}
               </Button>
             </Box>
           </Grid>

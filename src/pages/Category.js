@@ -154,7 +154,7 @@ export default function User() {
   return (
     <Page title="User | Minimal-UI">
       <Container>
-        <BasicModalCategory />
+        <BasicModalCategory getAllCategory={getAllCategory} />
         <Card>
           <UserListToolbar
             numSelected={selected.length}
@@ -178,7 +178,9 @@ export default function User() {
                   {allData
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
+                      console.log('row: =======', row);
                       const { _id, image, name } = row;
+                      console.log('image:======= ', image);
                       const isItemSelected = selected.indexOf(name) !== -1;
 
                       return (

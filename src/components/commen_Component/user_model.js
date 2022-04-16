@@ -41,6 +41,10 @@ export default function UserModel(props) {
   });
 
   const hendelFormData = useCallback((e) => {
+    console.log(
+      '🚀 ~ file: user_model.js ~ line 45 ~ hendelFormData ~ e.target.value',
+      e.target.value
+    );
     setFormData({ ...formData, [e.target.name]: e.target.value });
   });
 

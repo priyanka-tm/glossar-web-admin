@@ -5,20 +5,15 @@ import { useEffect, useState } from 'react';
 import {
   Card,
   Table,
-  Stack,
-  Avatar,
-  Checkbox,
   TableRow,
   TableBody,
   TableCell,
   Container,
-  Typography,
   TableContainer,
   TablePagination
 } from '@mui/material';
 // components
 import Page from '../components/Page';
-import Label from '../components/Label';
 import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
 import { UserListHead, UserListToolbar, UserMoreMenu } from '../sections/@dashboard/user';
@@ -26,14 +21,15 @@ import { UserListHead, UserListToolbar, UserMoreMenu } from '../sections/@dashbo
 import USERLIST from '../_mocks_/user';
 import BasicModalCategory from 'src/components/commen_Component/Category_Add_Model';
 import { apiInstance } from 'src/httpClient';
+import BasicModalOrder from 'src/components/commen_Component/Basic_Model_Order';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
+  { id: 'orderID', label: 'Order ID', alignRight: false },
   { id: 'name', label: 'Name', alignRight: false },
-  { id: 'company', label: 'Company', alignRight: false },
-  { id: 'role', label: 'Role', alignRight: false },
-  { id: 'isVerified', label: 'Verified', alignRight: false },
+  { id: 'email', label: 'Email', alignRight: false },
+  { id: 'phone', label: 'Phone', alignRight: false },
   { id: 'status', label: 'Status', alignRight: false },
   { id: '' }
 ];
@@ -77,16 +73,16 @@ export default function Order() {
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const [allOrder, setAllOrder] = useState();
+  const [allOrder, setAllOrder] = useState([]);
 
   useEffect(() => {
-    getAllCategory();
-  });
+    getAllOrder();
+  }, []);
 
-  const getAllCategory = async () => {
+  const getAllOrder = async () => {
     try {
-      const res = await apiInstance.get(`order/get-all`);
-      console.log('all category of product', res);
+      const res = await apiInstance.get(`order/get-all-admin`);
+      console.log('all orderr', res);
       setAllOrder(res.data.data);
     } catch (error) {
       console.log('category error', error);
@@ -148,7 +144,7 @@ export default function Order() {
   return (
     <Page title="Order | Minimal-UI">
       <Container>
-        <BasicModalCategory />
+        <BasicModalOrder />
         <Card>
           <UserListToolbar
             numSelected={selected.length}
@@ -166,56 +162,63 @@ export default function Order() {
                   rowCount={USERLIST.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
-                  onSelectAllClick={handleSelectAllClick}
+                  // onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {allOrder
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  {allOrder && allOrder.length
+                    ? allOrder
+                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        .map((row) => {
+                          const { _id, status, buyer_user, orderId, product, id } = row;
+                          const isItemSelected = selected.indexOf(name) !== -1;
+
+                          return (
+                            <TableRow
+                              hover
+                              key={_id}
+                              tabIndex={-1}
+                              selected={isItemSelected}
+                              aria-checked={isItemSelected}
+                            >
+                              <TableCell component="th" scope="row" padding="none"></TableCell>
+                              {/* <TableCell align="left">{name}</TableCell> */}
+                              <TableCell align="left">{orderId}</TableCell>
+                              <TableCell align="left">{buyer_user.userName}</TableCell>
+                              <TableCell align="left">{buyer_user.email}</TableCell>
+                              <TableCell align="left">{buyer_user.phone}</TableCell>
+                              <TableCell align="left">{status}</TableCell>
+                              <TableCell align="left"></TableCell>
+                              <TableCell align="right">
+                                <UserMoreMenu type="order" data={row} OrderGet={getAllOrder} />
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })
+                    : null}
+                  {/* .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { id, name, role, status, company, avatarUrl, isVerified } = row;
+                      const { _id, name, email, address, id } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
 
                       return (
                         <TableRow
                           hover
-                          key={id}
+                          key={_id}
                           tabIndex={-1}
-                          // role="checkbox"
                           selected={isItemSelected}
                           aria-checked={isItemSelected}
                         >
-                          <TableCell padding="checkbox">
-                            <Checkbox
-                              checked={isItemSelected}
-                              onChange={(event) => handleClick(event, name)}
-                            />
-                          </TableCell>
-                          <TableCell component="th" scope="row" padding="none">
-                            <Stack direction="row" alignItems="center" spacing={2}>
-                              <Avatar alt={name} src={avatarUrl} />
-                              <Typography variant="subtitle2" noWrap>
-                                {name}
-                              </Typography>
-                            </Stack>
-                          </TableCell>
-                          <TableCell align="left">{company}</TableCell>
-                          <TableCell align="left">{role}</TableCell>
-                          <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell>
-                          <TableCell align="left">
-                            <Label
-                              variant="ghost"
-                              color={(status === 'banned' && 'error') || 'success'}
-                            >
-                              {sentenceCase(status)}
-                            </Label>
-                          </TableCell>
-
+                          <TableCell component="th" scope="row" padding="none"></TableCell>
+                          <TableCell align="left">{name}</TableCell>
+                          <TableCell align="left">{email}</TableCell>
+                          <TableCell align="left">{address}</TableCell>
+                          <TableCell align="left"></TableCell>
                           <TableCell align="right">
-                            <UserMoreMenu type="order" />
+                            <UserMoreMenu type="user" data={row} getUser={getAllUser} />
                           </TableCell>
                         </TableRow>
                       );
-                    })}
+                    })} */}
                   {emptyRows > 0 && (
                     <TableRow style={{ height: 53 * emptyRows }}>
                       <TableCell colSpan={6} />

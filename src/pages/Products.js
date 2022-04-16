@@ -70,7 +70,7 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function User() {
+export default function Product() {
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
   const [selected, setSelected] = useState([]);
@@ -191,7 +191,7 @@ export default function User() {
                           <TableCell component="th" scope="row" padding="none"></TableCell>
                           <TableCell component="th" scope="row" padding="none">
                             <Stack direction="row" alignItems="center" spacing={2}>
-                              <Avatar alt={name} src={IMG_URL + image[0]} />
+                              <Avatar alt={name} src={image[0]} />
                             </Stack>
                           </TableCell>
                           <TableCell align="left">{name}</TableCell>

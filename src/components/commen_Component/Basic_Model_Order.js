@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import PageTitle from './Page_title_';
 import Iconify from '../Iconify';
 import Category_Model from './Categroy_model';
+import Order_Model from './Order_Model';
 
 const style = {
   position: 'absolute',
@@ -17,7 +18,7 @@ const style = {
   borderRadius: 3
 };
 
-export default function BasicModalCategory(props) {
+export default function BasicModalOrder(props) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -26,22 +27,22 @@ export default function BasicModalCategory(props) {
     <div>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
         <PageTitle pageTitle="Order" />
-        <Button
+        {/* <Button
           variant="contained"
           startIcon={<Iconify icon="eva:plus-fill" />}
           onClick={handleOpen}
         >
           Add Category
-        </Button>
+        </Button> */}
       </Stack>
-      <Modal
+      {/* <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Category_Model getAllCategory={props.getAllCategory} onClose={handleClose} />
-      </Modal>
+        <Order_Model getAllCategory={props.getAllCategory} onClose={handleClose} />
+      </Modal> */}
     </div>
   );
 }

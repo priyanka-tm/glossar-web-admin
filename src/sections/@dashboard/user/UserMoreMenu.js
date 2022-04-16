@@ -16,6 +16,7 @@ import UserModel from 'src/components/commen_Component/user_model';
 import ProductModel from 'src/components/commen_Component/Product_model';
 import Category_Model from 'src/components/commen_Component/Categroy_model';
 import { apiInstance } from 'src/httpClient';
+import Order_Model from 'src/components/commen_Component/Order_Model';
 
 // ----------------------------------------------------------------------
 
@@ -40,7 +41,7 @@ export default function UserMoreMenu(props) {
   const handleClose = () => {
     console.log('handleClose: ', handleClose);
     setOpen(false);
-    props.getUser();
+    // props.getUser();
   };
 
   const userDataDelete = async () => {
@@ -98,7 +99,11 @@ export default function UserMoreMenu(props) {
 
         <MenuItem onClick={handleOpen} sx={{ color: 'text.secondary' }}>
           <ListItemIcon>
-            <Iconify icon="eva:edit-fill" width={24} height={24} />
+            {props.type == 'order' ? (
+              <Iconify icon="eva:info-fill" width={24} height={24} />
+            ) : (
+              <Iconify icon="eva:edit-fill" width={24} height={24} />
+            )}
           </ListItemIcon>
           <ListItemText primary="Edit" primaryTypographyProps={{ variant: 'body2' }} />
         </MenuItem>
@@ -126,11 +131,31 @@ export default function UserMoreMenu(props) {
             ) : null}
             {props.type == 'category' ? (
               <Category_Model
-                CategoryGet={props.getAllCategory}
-                allCategoryGet={props.data}
+                CategoryGet={props.CategoryGet}
+                allCategoryData={props.data}
                 isCategoryEdit
                 name="Edit Category"
                 buttonName="Edit Category"
+                onClose={handleClose}
+              />
+            ) : null}
+            {/* {props.type == 'order' ? (
+              <Category_Model
+                CategoryGet={props.CategoryGet}
+                allCategoryData={props.data}
+                isOrderEdit
+                name="Edit Order"
+                buttonName="Edit Order"
+                onClose={handleClose}
+              />
+            ) : null} */}
+            {props.type == 'order' ? (
+              <Order_Model
+                OrderGet={props.OrderGet}
+                allOrderData={props.data}
+                isOrderEdit
+                name="Edit Order"
+                buttonName="Edit Order"
                 onClose={handleClose}
               />
             ) : null}

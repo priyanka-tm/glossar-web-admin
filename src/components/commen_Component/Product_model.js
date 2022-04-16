@@ -41,14 +41,14 @@ export default function ProductModel(props) {
     detail: props?.allProductData?.detail || '',
     price: props?.allProductData?.price || '',
     quantity: props?.allProductData?.quantity || '',
-    category: props?.allProductData?.category.name || '',
+    category: props?.allProductData?.category?.name || '',
     weight: props?.allProductData?.weight || ''
   });
   console.log('props?.allProductData?.quantity: ', props?.allProductData?.quantity);
   console.log('props?.allProductData?.category: ', props?.allProductData?.category);
   console.log('props?.allProductData?.image: ', props?.allProductData?.image);
 
-  const [age, setAge] = useState(props?.allProductData?.category._id || '');
+  const [age, setAge] = useState(props?.allProductData?.category?._id || '');
   console.log('age: ', age);
   const [loader, setLoader] = useState(false);
   const [allData, setAllData] = useState([]);
@@ -98,11 +98,11 @@ export default function ProductModel(props) {
         console.log('---imgUrl', imgUrl);
         const productAllData = {
           image: res.data.data.url,
-          name: productData.name,
-          detail: productData.detail,
-          price: productData.price,
-          quantity: productData.quantity,
-          weight: productData.weight,
+          name: productData?.name,
+          detail: productData?.detail,
+          price: productData?.price,
+          quantity: productData?.quantity,
+          weight: productData?.weight,
           category: age
         };
 
@@ -189,7 +189,7 @@ export default function ProductModel(props) {
               <TextField
                 fullWidth
                 name="name"
-                value={productData.name}
+                value={productData?.name}
                 onChange={hendelFormData}
                 label="Product Name"
                 id="fullWidth"
@@ -291,15 +291,9 @@ export default function ProductModel(props) {
                   </MenuItem>
 
                   {allData.map((e) => {
-                    console.log('eeeeeeeeeee: ', e);
-                    console.log(
-                      'props?.allProductData?.category.name === e.name: ',
-                      props?.allProductData?.category.name === e.name
-                    );
-
                     return (
                       <MenuItem value={e.id}>
-                        {props?.allProductData?.category._id === e._id ? e.name : e.name}
+                        {props?.allProductData?.category?._id === e._id ? e.name : e.name}
                       </MenuItem>
                     );
                   })}
@@ -350,7 +344,7 @@ export default function ProductModel(props) {
                   {props?.allProductData?.image && props.allProductData?.image.length
                     ? props?.allProductData?.image.map((ele) => {
                         console.log('ele:======= ', ele);
-                        return <img src={IMG_URL + ele} alt="img" />;
+                        return <img src={ele} alt="img" />;
                       })
                     : null}
                 </div>
@@ -368,12 +362,6 @@ export default function ProductModel(props) {
 
             {/* <MultipleImageUploadComponent name="image" value={formData.image} /> */}
           </Grid>
-
-          <img
-            src={
-              'https://web-glooser.herokuapp.com/uploads/glooser/singleFile_IMG_0876_1649667432573.PNG'
-            }
-          ></img>
 
           <Grid item xs={12}>
             <Box sx={{ my: 2 }}>
