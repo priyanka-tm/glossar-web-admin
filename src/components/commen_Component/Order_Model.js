@@ -48,6 +48,18 @@ function createData(name, calories, fat, carbs, protein) {
 //   createData('Gingerbread', 356, 16.0, 49, 3.9)
 // ];
 
+const orderHendelStatus = async () => {
+  try {
+    const orderData = {
+      status: 'status'
+    };
+    const rep = await apiInstance.put(`order/update`, orderData);
+    console.log('rep: ', rep);
+  } catch (error) {
+    console.log(error.response);
+  }
+};
+
 export default function Order_Model(props) {
   console.log('props: ', props);
   // const [Order, setOrder] = useState({
@@ -162,10 +174,15 @@ export default function Order_Model(props) {
           <Button variant="contained" color="secondary">
             pending
           </Button>
-          <Button variant="contained" style={{ color: 'white' }} color="success">
+          <Button
+            variant="contained"
+            style={{ color: 'white' }}
+            color="success"
+            onClick={orderHendelStatus}
+          >
             Acceptes
           </Button>
-          <Button variant="contained" color="error">
+          <Button variant="contained" color="error" onClick={orderHendelStatus}>
             Cencal
           </Button>
         </Stack>

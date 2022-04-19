@@ -31,24 +31,23 @@ const sidebarConfig = [
     title: 'order',
     path: '/dashboard/order',
     icon: getIcon('eva:shopping-cart-fill')
-  },
+  }
 
-
-  {
-    title: 'logout',
-    path: '/dashboard/logout',
-    icon: getIcon('majesticons:logout')
-  },
+  // {
+  //   title: 'logout',
+  //   path: '/dashboard/logout',
+  //   icon: getIcon('majesticons:logout')
+  // },
   // {
   //   title: 'login',
   //   path: '/login',
   //   icon: getIcon('eva:lock-fill')
   // },
-  {
-    title: 'register',
-    path: '/register',
-    icon: getIcon('eva:person-add-fill')
-  },
+  // {
+  //   title: 'register',
+  //   path: '/register',
+  //   icon: getIcon('eva:person-add-fill')
+  // },
   // {
   //   title: 'Not found',
   //   path: '/404',
