@@ -180,14 +180,14 @@ export default function Order() {
                               selected={isItemSelected}
                               aria-checked={isItemSelected}
                             >
-                              <TableCell component="th" scope="row" padding="none"></TableCell>
+                              {/* <TableCell component="th" scope="row" padding="none"></TableCell> */}
                               {/* <TableCell align="left">{name}</TableCell> */}
                               <TableCell align="left">{orderId}</TableCell>
                               <TableCell align="left">{buyer_user.userName}</TableCell>
                               <TableCell align="left">{buyer_user.email}</TableCell>
                               <TableCell align="left">{buyer_user.phone}</TableCell>
                               <TableCell align="left">{status}</TableCell>
-                              <TableCell align="left"></TableCell>
+                              {/* <TableCell align="left"></TableCell> */}
                               <TableCell align="right">
                                 <UserMoreMenu type="order" data={row} OrderGet={getAllOrder} />
                               </TableCell>

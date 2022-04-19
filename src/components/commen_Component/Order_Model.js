@@ -48,10 +48,22 @@ function createData(name, calories, fat, carbs, protein) {
 //   createData('Gingerbread', 356, 16.0, 49, 3.9)
 // ];
 
-const orderHendelStatus = async () => {
+const orderHendelAcceptes = async () => {
   try {
     const orderData = {
-      status: 'status'
+      status: 'ACCEPTED'
+    };
+    const rep = await apiInstance.put(`order/update`, orderData);
+    console.log('rep: ', rep);
+  } catch (error) {
+    console.log(error.response);
+  }
+};
+
+const orderHendelCencal = async () => {
+  try {
+    const orderData = {
+      status: 'CANCELED'
     };
     const rep = await apiInstance.put(`order/update`, orderData);
     console.log('rep: ', rep);
@@ -178,11 +190,11 @@ export default function Order_Model(props) {
             variant="contained"
             style={{ color: 'white' }}
             color="success"
-            onClick={orderHendelStatus}
+            onClick={orderHendelAcceptes}
           >
             Acceptes
           </Button>
-          <Button variant="contained" color="error" onClick={orderHendelStatus}>
+          <Button variant="contained" color="error" onClick={orderHendelCencal}>
             Cencal
           </Button>
         </Stack>

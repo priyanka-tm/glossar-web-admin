@@ -320,13 +320,13 @@ export default function ProductModel(props) {
                       key={url}
                       style={{
                         width: '200px',
-                        height: '170px',
+                        height: 'auto',
                         position: 'relative',
                         marginRight: '10px',
                         marginBottom: '20px'
                       }}
                     >
-                      <img src={url} alt="" style={{ height: '100%', width: '100%' }} />
+                      <img src={url} alt="" style={{ height: '100px', width: '100px' }} />
                     </div>
                   );
                 })}
@@ -344,7 +344,9 @@ export default function ProductModel(props) {
                   {props?.allProductData?.image && props.allProductData?.image.length
                     ? props?.allProductData?.image.map((ele) => {
                         console.log('ele:======= ', ele);
-                        return <img src={ele} alt="img" />;
+                        return (
+                          <img src={ele} alt="img" style={{ height: 'auto', width: '100px' }} />
+                        );
                       })
                     : null}
                 </div>

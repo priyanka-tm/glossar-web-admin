@@ -121,8 +121,26 @@ export default function UserModel(props) {
             >
               <TextField
                 fullWidth
-                name="name"
                 label="User Name"
+                name="userName"
+                value={formData.userName}
+                onChange={hendelFormData}
+                id="fullWidth"
+              />
+            </Box>
+          </Grid>
+
+          <Grid item xs={6}>
+            <Box
+              sx={{
+                maxWidth: '100',
+                my: 1
+              }}
+            >
+              <TextField
+                fullWidth
+                name="name"
+                label="Name"
                 value={formData.name}
                 onChange={hendelFormData}
                 id="fullWidth"
@@ -143,25 +161,6 @@ export default function UserModel(props) {
                 label="User Email"
                 disabled={props.isUserEdit}
                 value={formData.email}
-                onChange={hendelFormData}
-                id="fullWidth"
-              />
-            </Box>
-          </Grid>
-
-          <Grid item xs={6}>
-            <Box
-              sx={{
-                maxWidth: '100',
-                my: 1
-              }}
-            >
-              <TextField
-                fullWidth
-                label="Phone Number"
-                name="number"
-                type="number"
-                value={formData.number}
                 onChange={hendelFormData}
                 id="fullWidth"
               />
@@ -197,9 +196,10 @@ export default function UserModel(props) {
             >
               <TextField
                 fullWidth
-                label="User Name"
-                name="userName"
-                value={formData.userName}
+                label="Phone Number"
+                name="number"
+                type="number"
+                value={formData.number}
                 onChange={hendelFormData}
                 id="fullWidth"
               />
@@ -215,7 +215,7 @@ export default function UserModel(props) {
             >
               <TextField
                 fullWidth
-                label="User Address"
+                label="Address"
                 name="address"
                 value={formData.address}
                 onChange={hendelFormData}

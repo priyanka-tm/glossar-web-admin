@@ -15,6 +15,7 @@ export default function Logo({ sx }) {
     <RouterLink to="/">
       <Box sx={{ width: 10, height: 10, ...sx }}>
         <YourSvg />
+        {/* <Image source={{ uri: '../Attech/logo.gif' }} /> */}
       </Box>
     </RouterLink>
   );
