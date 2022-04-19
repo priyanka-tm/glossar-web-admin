@@ -29,12 +29,10 @@ const style = {
 };
 
 export default function UserModel(props) {
-  console.log('props:00000========== ', props.UserGet);
-
   const [formData, setFormData] = useState({
     name: props?.alldata?.name || '',
     email: props?.alldata?.email || '',
-    number: props?.alldata?.number || '',
+    number: props?.alldata?.phone || '',
     userName: props?.alldata?.userName || '',
     address: props?.alldata?.address || '',
     password: props?.alldata?.password || ''
@@ -143,6 +141,7 @@ export default function UserModel(props) {
                 fullWidth
                 name="email"
                 label="User Email"
+                disabled={props.isUserEdit}
                 value={formData.email}
                 onChange={hendelFormData}
                 id="fullWidth"
@@ -169,25 +168,27 @@ export default function UserModel(props) {
             </Box>
           </Grid>
 
-          <Grid item xs={6}>
-            <Box
-              sx={{
-                maxWidth: '100',
-                my: 1
-              }}
-            >
-              <TextField
-                fullWidth
-                label="Password"
-                name="password"
-                value={formData.password}
-                onChange={hendelFormData}
-                id="fullWidth"
-              />
-            </Box>
-          </Grid>
+          {!props.isUserEdit ? (
+            <Grid item xs={6}>
+              <Box
+                sx={{
+                  maxWidth: '100',
+                  my: 1
+                }}
+              >
+                <TextField
+                  fullWidth
+                  label="Password"
+                  name="password"
+                  value={formData.password}
+                  onChange={hendelFormData}
+                  id="fullWidth"
+                />
+              </Box>
+            </Grid>
+          ) : null}
 
-          <Grid item xs={12}>
+          <Grid item xs={6}>
             <Box
               sx={{
                 maxWidth: '100',
@@ -205,7 +206,7 @@ export default function UserModel(props) {
             </Box>
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid item xs={6}>
             <Box
               sx={{
                 maxWidth: '100',

@@ -28,6 +28,7 @@ import { PropaneSharp } from '@mui/icons-material';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
+  { id: 'id', label: 'Id', alignRight: false },
   { id: 'img', label: 'Image', alignRight: false },
   { id: 'name', label: 'Name', alignRight: false },
   { id: 'price', label: 'Price', alignRight: false },
@@ -104,30 +105,12 @@ export default function Product() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.name);
+      const newSelecteds = allData.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
   };
-
-  // const handleClick = (event, name) => {
-  //   const selectedIndex = selected.indexOf(name);
-  //   let newSelected = [];
-  //   if (selectedIndex === -1) {
-  //     newSelected = newSelected.concat(selected, name);
-  //   } else if (selectedIndex === 0) {
-  //     newSelected = newSelected.concat(selected.slice(1));
-  //   } else if (selectedIndex === selected.length - 1) {
-  //     newSelected = newSelected.concat(selected.slice(0, -1));
-  //   } else if (selectedIndex > 0) {
-  //     newSelected = newSelected.concat(
-  //       selected.slice(0, selectedIndex),
-  //       selected.slice(selectedIndex + 1)
-  //     );
-  //   }
-  //   setSelected(newSelected);
-  // };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -142,9 +125,9 @@ export default function Product() {
     setFilterName(event.target.value);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - allData.length) : 0;
 
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(allData, getComparator(order, orderBy), filterName);
 
   const isUserNotFound = filteredUsers.length === 0;
 
@@ -157,6 +140,7 @@ export default function Product() {
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
+            type="product"
           />
 
           <Scrollbar>
@@ -166,57 +150,66 @@ export default function Product() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={USERLIST.length}
+                  rowCount={allData.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
+                  onSelectAllClick={handleSelectAllClick}
                 />
-                <TableBody>
-                  {allData
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row) => {
-                      const { image, name, price, quantity, weight, detail, id, _id } = row;
-                      console.log('quantity: ', quantity);
-                      console.log('row: ', row);
-                      console.log('image: ', image);
-                      const isItemSelected = selected.indexOf(name) !== -1;
 
-                      return (
-                        <TableRow
-                          hover
-                          // key={_id}
-                          tabIndex={-1}
-                          selected={isItemSelected}
-                          aria-checked={isItemSelected}
-                        >
-                          <TableCell component="th" scope="row" padding="none"></TableCell>
-                          <TableCell component="th" scope="row" padding="none">
-                            <Stack direction="row" alignItems="center" spacing={2}>
-                              <Avatar alt={name} src={image[0]} />
-                            </Stack>
-                          </TableCell>
-                          <TableCell align="left">{name}</TableCell>
-                          <TableCell align="left">{price}</TableCell>
-                          <TableCell align="left">{quantity}</TableCell>
-                          <TableCell align="left">{weight}</TableCell>
-                          <TableCell align="left">{detail}</TableCell>
-                          <TableCell align="left"></TableCell>
-                          <TableCell align="right">
-                            <UserMoreMenu type="product" data={row} allProductGet={getAllProduct} />
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  {emptyRows > 0 && (
-                    <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={6} />
-                    </TableRow>
-                  )}
-                </TableBody>
-                {isUserNotFound && (
+                {!isUserNotFound ? (
+                  <TableBody>
+                    {filteredUsers
+                      .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                      .map((row, index) => {
+                        const { image, name, price, quantity, weight, detail, id, _id } = row;
+                        console.log('quantity: ', quantity);
+                        console.log('row: ', row);
+                        console.log('image: ', image);
+                        const isItemSelected = selected.indexOf(name) !== -1;
+
+                        return (
+                          <TableRow
+                            hover
+                            // key={_id}
+                            tabIndex={-1}
+                            selected={isItemSelected}
+                            aria-checked={isItemSelected}
+                          >
+                            <TableCell component="th" scope="row">
+                              {index + 1}
+                            </TableCell>
+                            <TableCell component="th" scope="row">
+                              <Stack direction="row" alignItems="center" spacing={2}>
+                                <Avatar alt={name} src={image[0]} />
+                              </Stack>
+                            </TableCell>
+                            <TableCell align="left">{name}</TableCell>
+                            <TableCell align="left">{price}</TableCell>
+                            <TableCell align="left">{quantity}</TableCell>
+                            <TableCell align="left">{weight}</TableCell>
+                            <TableCell align="left">{detail}</TableCell>
+                            <TableCell align="left"></TableCell>
+                            <TableCell align="right">
+                              <UserMoreMenu
+                                type="product"
+                                data={row}
+                                allProductGet={getAllProduct}
+                              />
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
+                    {emptyRows > 0 && (
+                      <TableRow style={{ height: 53 * emptyRows }}>
+                        <TableCell colSpan={6} />
+                      </TableRow>
+                    )}
+                  </TableBody>
+                ) : (
                   <TableBody>
                     <TableRow>
                       <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                        <SearchNotFound searchQuery={filterName} />
+                        <SearchNotFound searchQuery={filterName} type="product" />
                       </TableCell>
                     </TableRow>
                   </TableBody>
@@ -228,7 +221,7 @@ export default function Product() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={USERLIST.length}
+            count={allData.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
