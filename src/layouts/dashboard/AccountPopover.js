@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Link as RouterLink  } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 // material
@@ -11,6 +11,7 @@ import MenuPopover from '../../components/MenuPopover';
 //
 import account from '../../_mocks_/account';
 import { removeUserSession } from 'src/utils/comman';
+import { getUser, getData } from './../../utils/comman';
 
 // ----------------------------------------------------------------------
 
@@ -24,7 +25,7 @@ const MENU_OPTIONS = [
     label: 'Profile',
     icon: 'eva:person-fill',
     linkTo: '#'
-  },
+  }
   // {
   //   label: 'Settings',
   //   icon: 'eva:settings-2-fill',
@@ -32,21 +33,21 @@ const MENU_OPTIONS = [
   // }
 ];
 
-
-
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
   const userRemove = removeUserSession();
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
+  const [userData, setUserData] = useState(getData());
   let navigate = useNavigate();
 
-  const cleareData = () =>{
+  console.log('userData: ', userData);
+  const cleareData = () => {
     removeUserSession();
     navigate('/');
   };
- 
+
   const handleOpen = () => {
     setOpen(true);
   };
@@ -87,35 +88,14 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle1" noWrap>
-            {account.displayName}
+            {userData?.userName || 'Admin'}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {account.email}
+            {userData?.email || 'admin@gmail.com'}
           </Typography>
         </Box>
 
         <Divider sx={{ my: 1 }} />
-
-        {MENU_OPTIONS.map((option) => (
-          <MenuItem
-            key={option.label}
-            to={option.linkTo}
-            component={RouterLink}
-            onClick={handleClose}
-            sx={{ typography: 'body2', py: 1, px: 2.5 }}
-          >
-            <Iconify
-              icon={option.icon}
-              sx={{
-                mr: 2,
-                width: 24,
-                height: 24
-              }}
-            />
-
-            {option.label}
-          </MenuItem>
-        ))}
 
         <Box sx={{ p: 2, pt: 1.5 }}>
           <Button fullWidth color="inherit" variant="outlined" onClick={cleareData}>
