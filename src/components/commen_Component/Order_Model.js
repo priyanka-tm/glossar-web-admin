@@ -53,7 +53,7 @@ const orderHendelAcceptes = async () => {
     const orderData = {
       status: 'ACCEPTED'
     };
-    const rep = await apiInstance.put(`order/update`, orderData);
+    const rep = await apiInstance.put(`order/update/${props.allOrderData._id}`, orderData);
     console.log('rep: ', rep);
   } catch (error) {
     console.log(error.response);
@@ -65,7 +65,7 @@ const orderHendelCencal = async () => {
     const orderData = {
       status: 'CANCELED'
     };
-    const rep = await apiInstance.put(`order/update`, orderData);
+    const rep = await apiInstance.put(`order/update/${props.allOrderData._id}`, orderData);
     console.log('rep: ', rep);
   } catch (error) {
     console.log(error.response);
