@@ -26,11 +26,12 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 1100,
+  height: 650,
   bgcolor: 'background.paper',
   boxShadow: 24,
   p: 4,
   borderRadius: 3
-  // overflow: 'scroll'
+  // overflowY: 'scroll'
 };
 
 export default function ProductModel(props) {
@@ -49,7 +50,7 @@ export default function ProductModel(props) {
   console.log('props?.allProductData?.image: ', props?.allProductData?.image);
 
   const [age, setAge] = useState(props?.allProductData?.category?._id || '');
-  console.log('age: ', age);
+  console.log('age==============+++++++++++++++++++++: ', age);
   const [loader, setLoader] = useState(false);
   const [allData, setAllData] = useState([]);
   console.log('allData: ', allData);
@@ -127,8 +128,8 @@ export default function ProductModel(props) {
             console.log('---add----', resp);
             props.onClose();
             props.getAllProduct();
-          } catch (e) {
-            console.log('eeeee---0000-', e.response);
+          } catch (error) {
+            console.log('eeeee---0000-', error.response);
           }
         }
       }
@@ -305,31 +306,29 @@ export default function ProductModel(props) {
           <Grid item xs={6}>
             <Row>
               <Col>
-                <div className="form-group">
+                <Stack direction="row" className="form-group">
                   <input
                     type="file"
                     className="form-control"
                     onChange={uploadMultipleFiles}
                     multiple
                   />
-                </div>
-                {(file || []).map((url, index) => {
-                  console.log('url: ', url);
-                  return (
-                    <div
-                      key={url}
-                      style={{
-                        width: '200px',
-                        height: 'auto',
-                        position: 'relative',
-                        marginRight: '10px',
-                        marginBottom: '20px'
-                      }}
-                    >
-                      <img src={url} alt="" style={{ height: '100px', width: '100px' }} />
-                    </div>
-                  );
-                })}
+                </Stack>
+                <Stack
+                  direction="row"
+                  style={{
+                    width: '200px',
+                    height: 'auto',
+                    position: 'relative',
+                    marginRight: '10px',
+                    marginBottom: '20px'
+                  }}
+                >
+                  {(file || []).map((url, index) => {
+                    console.log('url: ', url);
+                    return <img src={url} alt="" style={{ height: '100px', width: '100px' }} />;
+                  })}
+                </Stack>
 
                 {/* {props?.allProductData?.image.map((e) => {
                   console.log('e: ', e);
@@ -340,7 +339,7 @@ export default function ProductModel(props) {
                   }
                   return <img src={e.image} />;
                 })} */}
-                <div>
+                <Stack direction="row" spacing={3} py={4}>
                   {props?.allProductData?.image && props.allProductData?.image.length
                     ? props?.allProductData?.image.map((ele) => {
                         console.log('ele:======= ', ele);
@@ -349,7 +348,7 @@ export default function ProductModel(props) {
                         );
                       })
                     : null}
-                </div>
+                </Stack>
 
                 {/* <div className="form-group multi-preview">
                   {file && file.length > 0

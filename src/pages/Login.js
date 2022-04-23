@@ -61,7 +61,6 @@ export default function Login() {
             <Typography variant="h4" gutterBottom>
               Sign in Glosser Admin
             </Typography>
-            {/* <Typography sx={{ color: 'text.secondary' }}>Enter your details below.</Typography> */}
           </Stack>
           <AuthSocial />
 

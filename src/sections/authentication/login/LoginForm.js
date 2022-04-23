@@ -44,10 +44,9 @@ export default function LoginForm() {
       setError('error login fiild');
       // {(e.data.status === 200) ? <p>loglin success full</p>  : <p>login unsuccessfull</p>}
       setErrorMessage('Email or Password invelid!');
+    } finally {
+      setLoader(false);
     }
-    // finally {
-    //   setLoader(false);
-    // }
   };
 
   const LoginSchema = Yup.object().shape({
@@ -76,7 +75,6 @@ export default function LoginForm() {
               {errorMessage}{' '}
             </div>
           )}
-          {/* { res.status === 200 ? <div color='red' className="error"> {errorMessage} </div> : null } */}
         </Stack>
 
         <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
@@ -86,8 +84,7 @@ export default function LoginForm() {
 
         <Stack>
           <Button sx={{ py: 2 }} onClick={handleLogin} variant="contained">
-            {' '}
-            Login{' '}
+            Login
             {loader ? (
               <CircularProgress color="inherit" size={15} style={{ marginLeft: '5px' }} />
             ) : null}
